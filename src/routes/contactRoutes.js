@@ -59,9 +59,8 @@ router.post("/addContact", async (req, res) => {
 });
 
 // PUT/update a contact by ID -- Edit flow
-router.put("/updateContact/:id", async (req, res) => {
-  const { id } = req.params;
-  const { name, number, email, image } = req.body;
+router.put("/updateContact", async (req, res) => {
+  const { id, name, number, email, image } = req.body;
 
   try {
     // Find the contact by ID
@@ -93,8 +92,8 @@ router.put("/updateContact/:id", async (req, res) => {
 });
 
 // DELETE a contact by ID -- Remove flow
-router.delete("/deleteContact/:id", async (req, res) => {
-  const { id } = req.params;
+router.delete("/deleteContact", async (req, res) => {
+  const { id } = req.body;
 
   try {
     // Find the contact by ID
