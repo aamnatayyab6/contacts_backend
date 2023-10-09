@@ -12,7 +12,7 @@ const contactRoutes = require('./routes/contactRoutes');
 app.use(cors());
 
 // API routes
-app.use('/api/contacts', contactRoutes);
+app.use('/', contactRoutes);
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);

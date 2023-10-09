@@ -38,7 +38,7 @@ router.get("/:id", async (req, res) => {
 });
 
 // POST a new contact -- Add flow
-router.post("/", async (req, res) => {
+router.post("/addContact", async (req, res) => {
   const { name, number, email, image } = req.body;
 
   try {
@@ -59,7 +59,7 @@ router.post("/", async (req, res) => {
 });
 
 // PUT/update a contact by ID -- Edit flow
-router.put("/:id", async (req, res) => {
+router.put("/updateContact/:id", async (req, res) => {
   const { id } = req.params;
   const { name, number, email, image } = req.body;
 
@@ -93,7 +93,7 @@ router.put("/:id", async (req, res) => {
 });
 
 // DELETE a contact by ID -- Remove flow
-router.delete("/:id", async (req, res) => {
+router.delete("/deleteContact/:id", async (req, res) => {
   const { id } = req.params;
 
   try {
