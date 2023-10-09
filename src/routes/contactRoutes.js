@@ -4,6 +4,16 @@ const router = express.Router();
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
+// cloudinary for images:
+const cloudinary = require("cloudinary").v2;
+
+// Configure Cloudinary with your credentials
+cloudinary.config({
+  cloud_name: "dg8969jxs",
+  api_key: "529112513943426",
+  api_secret: "NYqes7xcsDfvniKp7QL1H79I3lM",
+});
+
 // GET all contacts
 router.get("/", async (req, res) => {
   try {
@@ -39,15 +49,19 @@ router.get("/:id", async (req, res) => {
 
 // POST a new contact -- Add flow
 router.post("/addContact", async (req, res) => {
-  const { name, number, email, image } = req.body;
+  const { name, number, email } = req.body;
+  const imageFile = req.file;
 
   try {
+    const cloudinaryResponse = await cloudinary.uploader.upload(imageFile.path);
+    const imageUrl = cloudinaryResponse.secure_url;
+
     const contact = await prisma.contact.create({
       data: {
         name,
         number,
         email,
-        image,
+        image: imageUrl,
       },
     });
 
@@ -60,7 +74,8 @@ router.post("/addContact", async (req, res) => {
 
 // PUT/update a contact by ID -- Edit flow
 router.put("/updateContact", async (req, res) => {
-  const { id, name, number, email, image } = req.body;
+  const { id, name, number, email } = req.body;
+  const imageFile = req.file; 
 
   try {
     // Find the contact by ID
@@ -73,14 +88,23 @@ router.put("/updateContact", async (req, res) => {
       return res.status(404).json({ error: "Contact not found" });
     }
 
-    // Update the contact in the database
+    let imageUrl = existingContact.image;
+
+    if (imageFile) {
+      const cloudinaryResponse = await cloudinary.uploader.upload(
+        imageFile.path
+      );
+      imageUrl = cloudinaryResponse.secure_url;
+    }
+
+    // Update the contact in the database with the new image URL
     const updatedContact = await prisma.contact.update({
       where: { id },
       data: {
         name,
         number,
         email,
-        image,
+        image: imageUrl,
       },
     });
 
