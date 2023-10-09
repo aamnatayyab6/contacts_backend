@@ -22,3 +22,6 @@ npm start
 ```bash
 npx prisma studio
 ```
+
+Note: This prisma studio will host only local database (different from render). The application is connected to the sqlite database
+generated on render which can not be accessed directly. The contacts.db, schema files and prisma studio however show how local database works generally.
