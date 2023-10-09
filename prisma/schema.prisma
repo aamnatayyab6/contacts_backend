@@ -13,8 +13,8 @@ datasource db {
 model Contact {
   id          String   @id @default(cuid())
   name        String
-  number      String
-  email       String
+  number      String?
+  email       String?
   image       String?
   createDate  DateTime @default(now())
   updatedDate DateTime @updatedAt
