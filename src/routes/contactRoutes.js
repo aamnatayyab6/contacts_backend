@@ -15,6 +15,28 @@ router.get("/", async (req, res) => {
   }
 });
 
+// GET details of a single contact by ID
+router.get("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    // Find the contact by ID
+    const contact = await prisma.contact.findUnique({
+      where: { id },
+    });
+
+    // If the contact doesn't exist, return a 404 response
+    if (!contact) {
+      return res.status(404).json({ error: "Contact not found" });
+    }
+
+    res.json(contact);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
 // POST a new contact -- Add flow
 router.post("/", async (req, res) => {
   const { name, number, email, image } = req.body;
