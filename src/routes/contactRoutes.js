@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
 
+const multer = require("multer");
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
@@ -48,14 +52,22 @@ router.get("/:id", async (req, res) => {
 });
 
 // POST a new contact -- Add flow
-router.post("/addContact", async (req, res) => {
+router.post("/addContact", upload.single("image"), async (req, res) => {
   const { name, number, email } = req.body;
   const imageFile = req.file;
 
   try {
-    const cloudinaryResponse = await cloudinary.uploader.upload(imageFile.path);
+    if (!imageFile) {
+      return res.status(400).json({ error: "Image is required" });
+    }
+
+    // Process the imageFile and upload it to Cloudinary
+    const cloudinaryResponse = await cloudinary.uploader.upload(
+      imageFile.buffer
+    );
     const imageUrl = cloudinaryResponse.secure_url;
 
+    // Create the contact with the uploaded image URL
     const contact = await prisma.contact.create({
       data: {
         name,
@@ -65,7 +77,6 @@ router.post("/addContact", async (req, res) => {
       },
     });
 
-    res.json(contact);
     res.status(201).json(contact);
   } catch (error) {
     console.error(error);
