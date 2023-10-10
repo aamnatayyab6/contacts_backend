@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const streamifier = require('streamifier');
 const multer = require("multer");
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
@@ -58,13 +58,19 @@ router.post("/addContact", upload.single("image"), async (req, res) => {
   console.log("!!!!!!!!!!!1 ", req.body, imageFile);
   try {
     console.log("!!!!TRY!!!!!!!1 ", req.body, imageFile);
+
     // Process the imageFile and upload it to Cloudinary
     let imageUrl = null;
     if (imageFile) {
-      const cloudinaryResponse = await cloudinary.uploader.upload(
-        imageFile.buffer
-      );
-      const imageUrl = cloudinaryResponse.secure_url;
+      const stream = streamifier.createReadStream(imageFile.buffer); // Create a readable stream from the buffer
+
+      const cloudinaryResponse = await new Promise((resolve, reject) => {
+        cloudinary.uploader.upload_stream((result) => {
+          resolve(result);
+        }).end(stream);
+      });
+
+      imageUrl = cloudinaryResponse.secure_url;
       console.log("!!!!!!!!!!!1222 ", imageUrl);
     }
 
