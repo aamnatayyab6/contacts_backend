@@ -73,7 +73,7 @@ router.post("/addContact", upload.single("image"), async (req, res) => {
       });
 
       imageUrl = cloudinaryResponse.secure_url;
-      console.log("!!!!!!!!!!!1222 ", imageUrl);
+      console.log("!!!!!!!!!!!1222 ", imageUrl, "cloudinaryResponsecloudinaryResponsecloudinaryResponse", cloudinaryResponse);
     }
 
     // Create the contact with the uploaded image URL
