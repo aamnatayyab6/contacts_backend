@@ -66,16 +66,17 @@ router.post("/addContact", async (req, res) => {
     });
 
     res.json(contact);
+    res.status(201).json(contact);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Internal Server Error" });
+    res.status(500).json({ error: "Internal Server Error" + error.message });
   }
 });
 
 // PUT/update a contact by ID -- Edit flow
 router.put("/updateContact", async (req, res) => {
   const { id, name, number, email } = req.body;
-  const imageFile = req.file; 
+  const imageFile = req.file;
 
   try {
     // Find the contact by ID
