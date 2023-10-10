@@ -55,17 +55,19 @@ router.get("/:id", async (req, res) => {
 router.post("/addContact", upload.single("image"), async (req, res) => {
   const { name, number, email } = req.body;
   const imageFile = req.file;
-
+  console.log("!!!!!!!!!!!1 ", req.body, imageFile);
   try {
     if (!imageFile) {
       return res.status(400).json({ error: "Image is required" });
     }
-
+    
+    console.log("!!!!!!!!!!!1 ", req.body, imageFile);
     // Process the imageFile and upload it to Cloudinary
     const cloudinaryResponse = await cloudinary.uploader.upload(
       imageFile.buffer
-    );
-    const imageUrl = cloudinaryResponse.secure_url;
+      );
+      const imageUrl = cloudinaryResponse.secure_url;
+      console.log("!!!!!!!!!!!1222 ", imageUrl);
 
     // Create the contact with the uploaded image URL
     const contact = await prisma.contact.create({
