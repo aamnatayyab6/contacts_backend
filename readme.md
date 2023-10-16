@@ -1,5 +1,4 @@
-## Backend hosted on Render: Check [Here](https://contacts-backend-hhfn.onrender.com/api/contacts)
-
+## Backend hosted on Render: Check [Here](https://contacts-backend-hhfn.onrender.com/)
 Backend: NodeJS (=> 16.19.1), Prisma, SQLite
 
 ## How to use on local machine:
@@ -17,7 +16,7 @@ npm install
 npm start
 ```
 
-4. To run prisma studio on localhost:555:
+4. To run prisma studio on localhost:5555:
 
 ```bash
 npx prisma studio
